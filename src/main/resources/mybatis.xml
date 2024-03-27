@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+
+    <!--mybatis。xml文件中 一是数据源 二是sql语句-->
+    <!--<properties resource="dbconfig.properties"/>-->
+    <!--q全局配置 设置在控制台打印执行过程-->
+    <settings>
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
+    </settings>
+    <!--<environments default="aaa">-->
+        <!--<environment id="aaa">-->
+            <!--<transactionManager type="JDBC"/>-->
+            <!--&lt;!&ndash;手动开启事务  不手动提交不生效&ndash;&gt;-->
+            <!--<dataSource type="POOLED">-->
+                <!--&lt;!&ndash;使用mybatis原生的数据库连接池&ndash;&gt;-->
+                <!--<property name="driver" value="${driverName}"></property>-->
+                <!--<property name="url" value="${urlName}"/>-->
+                <!--<property name="username" value="root"/>-->
+                <!--<property name="password" value="root"/>-->
+            <!--</dataSource>-->
+        <!--</environment>-->
+    <!--</environments>-->
+
+
+    <!--配置sql语句-->
+    <!--<mappers>-->
+        <!--&lt;!&ndash;<mapper resource="com/bjpn/mapper/MysqlDemo01.xml"/>&ndash;&gt;-->
+        <!--&lt;!&ndash;<mapper resource="com/bjpnmapper/MysqlDemo02.xml"/>&ndash;&gt;-->
+        <!--&lt;!&ndash;<mapper resource="com/bjpn/mapper/UserMapper.xml"></mapper>&ndash;&gt;-->
+        <!--&lt;!&ndash;<mapper resource="com/bjpn/mapper/StudentMapper.xml"></mapper>&ndash;&gt;-->
+        <!--<package name="com.bjpn.mapper"></package>-->
+    <!--</mappers>-->
+</configuration>

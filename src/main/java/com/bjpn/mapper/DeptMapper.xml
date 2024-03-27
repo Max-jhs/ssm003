@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bjpn.mapper.DeptMapper">
+    <!--SQL片段-->
+    <sql id="baseColumn" >
+        dept_id,dept_name,dept_addr
+    </sql>
+    <!--  ArrayList<Dept> selDeptNames();-->
+    <resultMap id="deptResultMap" type="com.bjpn.bean.Dept">
+        <result column="dept_id" property="deptId"/>
+        <result column="dept_name" property="deptName"/>
+        <result column="dept_addr" property="deptAddr"/>
+    </resultMap>
+    <select id="selDepts" resultType="com.bjpn.bean.Dept" resultMap="deptResultMap">
+      select <include refid="baseColumn"/>
+      from dept
+    </select>
+
+    <!-- int addDept(Dept dept);-->
+    <insert id="addDept" parameterType="com.bjpn.bean.Dept">
+        insert into dept(dept_name,dept_addr)
+        values(#{deptName},#{deptAddr})
+    </insert>
+
+    <!--Dept selDept(int deptId);-->
+    <select id="selDept" parameterType="int"  resultMap="deptResultMap">
+        select <include refid="baseColumn"/>
+        from dept
+        where dept_id = #{deptId}
+    </select>
+</mapper>

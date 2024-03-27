@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bjpn.mapper.EmpMapper">
+    <sql id="baseColumn">
+        emp_id,emp_name,emp_sal,emp_hiredate,emp_img,dept_id
+    </sql>
+    <resultMap id="empResultMap" type="com.bjpn.bean.Emp">
+        <result column="emp_id" property="empId"/>
+        <result column="emp_name" property="empName"/>
+        <result column="emp_sal" property="empSal"/>
+        <result column="emp_hiredate" property="empHireDate"/>
+        <result column="emp_img" property="empImg"/>
+        <result column="dept_id" property="empDeptId"/>
+        <association property="dept" select="com.bjpn.mapper.DeptMapper.selDept" column="dept_id"></association>
+    </resultMap>
+    <!--boolean addEmp(Emp emp)-->
+    <insert id="addEmp" parameterType="com.bjpn.bean.Emp">
+        insert into emp(emp_name,emp_sal,emp_hiredate,emp_img,dept_id)
+        values(#{empName},#{empSal},#{empHireDate},#{empImg},#{empDeptId})
+    </insert>
+
+    <!--查看所有员工-->
+    <!--ArrayList<Emp> showEmps(@Param("startIndex") int startIndex,@Param("pageSize") int pageSize,@Param("empName") String empName);-->
+
+    <select id="showEmps" resultMap="empResultMap">
+        select
+        <include refid="baseColumn"/>
+        from emp
+        <where>
+            <if test="empName!=null and empName!=''">
+                <bind name="empName" value="'%' + empName + '%'"/>
+                and emp_name like #{empName}
+            </if>
+            <if test="empName==null or empName == ''">
+                <bind name="empName" value="'%%'"/>
+                and emp_name like #{empName}
+            </if>
+            limit #{startIndex},#{pageSize}
+        </where>
+    </select>
+
+
+    <!--int delEmp(int empId);-->
+    <delete id="delEmp" parameterType="int">
+        delete
+        from emp
+        where emp_id=#{empId}
+    </delete>
+
+    <!--int upDateEmp(Emp emp);-->
+    <update id="upDateEmp" parameterType="com.bjpn.bean.Emp">
+        update emp
+        set emp_name=#{empName},emp_sal=#{empSal},emp_hiredate=#{empHireDate},emp_img=#{empImg},dept_id=#{empDeptId}
+        where emp_id=#{empId}
+    </update>
+
+    <!-- Emp selEmpById(int empId)-->
+    <select id="selEmpById" parameterType="int" resultMap="empResultMap">
+        select
+        <include refid="baseColumn"/>
+        from emp
+        where emp_id = #{empId}
+    </select>
+
+    <!-- int selEmp(String empName);-->
+    <select id="selEmp" parameterType="String">
+        <!--<choose>-->
+        <!--<when test="empName!=null and empName !=''">-->
+        <!--<bind name="empName" value="'%' + empName + '%'"/>-->
+        <!--</when>-->
+        <!--<otherwise>-->
+        <!--<bind name="empName" value="'%%'"/>-->
+        <!--</otherwise>-->
+        <!--</choose>-->
+        <!--select count(*)-->
+        <!--from emp-->
+        <!--where emp_name like #{empName}
+
+        -->
+        <!--<bind name="empName" value="'%' +empName+ '%'"/>-->
+        <!--and emp_name like #{empName}-->
+
+
+        select count(*)
+        from emp
+        <where>
+            <if test="empName!=null and empName != ''">
+                <bind name="empName" value="'%'+empName+'%'"/>
+                and emp_name like #{empName}
+            </if>
+            <if test="empName==null or empName ==''">
+                <bind name="empName" value="'%%'"/>
+                and emp_name like #{empName}
+            </if>
+
+        </where>
+    </select>
+
+    <!--批量删除  int delEmps(String[] empIds);-->
+
+    <delete id="delEmps" >
+        delete
+        from emp
+        where emp_id in
+        <foreach collection="array" item="empId" open="(" close=")" separator=",">
+            #{empId}
+        </foreach>
+    </delete>
+</mapper>

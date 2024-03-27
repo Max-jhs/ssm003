@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bjpn.mapper.AdminMapper">
+    <resultMap id="adminResultMap" type="com.bjpn.bean.Admin">
+        <id column="admin_id"  property="adminId"></id>
+        <result column="admin_name" property="adminName"></result>
+        <result column="admin_code" property="adminCode" ></result>
+        <result column="admin_pwd"  property="adminPwd" ></result>
+        <result column="admin_img"  property="adminImg"/>
+        <result column="admin_email"  property="adminEmail" />
+        <result column="admin_phone" property="adminPhone"/>
+        <result column="admin_desc"  property="adminDesc"></result>
+    </resultMap>
+    <!--Admin loginAdmin(@Param("adminCode") String adminCode, @Param("adminPwd") String adminPwd);-->
+    <select id="loginAdmin" resultMap="adminResultMap">
+        select *
+        from admininfo
+        where admin_code = #{Code} and admin_pwd=#{pwd}
+    </select>
+    <!-- int regAdmin(Admin admin);-->
+    <insert id="regAdmin" parameterType="com.bjpn.bean.Admin">
+        insert into admininfo(admin_name,admin_pwd,admin_code)VALUES(#{adminName},#{adminPwd},#{adminCode});
+    </insert>
+
+    <!-- String checkCodeUnique(String code);-->
+    <select id="checkCodeUnique" parameterType="String" resultType="String">
+        select admin_code
+        from adminInfo
+        where admin_code=#{code}
+    </select>
+    <!--    boolean modifyPwd(@Param("code") String code,@Param("newPwd") String newPwd);-->
+    <update id="modifyPwd">
+        update admininfo
+        set admin_pwd=#{newPwd}
+        where admin_code=#{code}
+    </update>
+    <!--int upDatePerson(Admin admin);-->
+    <update id="upDatePerson" parameterType="com.bjpn.bean.Admin">
+        update admininfo
+        set admin_img=#{adminImg}, admin_email=#{adminEmail}, admin_phone=#{adminPhone}, admin_desc=#{adminDesc}
+        where admin_code=#{adminCode}
+    </update>
+</mapper>
